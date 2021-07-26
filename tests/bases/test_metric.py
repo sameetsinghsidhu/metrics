@@ -41,19 +41,19 @@ def test_add_state():
     assert np.allclose(a._reductions["b"](tensor([1.0, 2.0])).numpy(), 1.5)
 
     a.add_state("c", tensor(0), "cat")
-    assert a._reductions["c"]([tensor([1]), tensor([1])]).shape == (2, )
+    assert a._reductions["c"]([tensor([1]), tensor([1])]).shape == (2,)
 
     with pytest.raises(ValueError):
-        a.add_state("d1", tensor(0), 'xyz')
+        a.add_state("d1", tensor(0), "xyz")
 
     with pytest.raises(ValueError):
         a.add_state("d2", tensor(0), 42)
 
     with pytest.raises(ValueError):
-        a.add_state("d3", [tensor(0)], 'sum')
+        a.add_state("d3", [tensor(0)], "sum")
 
     with pytest.raises(ValueError):
-        a.add_state("d4", 42, 'sum')
+        a.add_state("d4", 42, "sum")
 
     def custom_fx(_):
         return -1
@@ -75,7 +75,6 @@ def test_add_state_persistent():
 
 
 def test_reset():
-
     class A(DummyMetric):
         pass
 
@@ -108,9 +107,7 @@ def test_reset_compute():
 
 
 def test_update():
-
     class A(DummyMetric):
-
         def update(self, x):
             self.x += x
 
@@ -126,9 +123,7 @@ def test_update():
 
 
 def test_compute():
-
     class A(DummyMetric):
-
         def update(self, x):
             self.x += x
 
@@ -153,7 +148,6 @@ def test_compute():
 
 
 def test_hash():
-
     class A(DummyMetric):
         pass
 
@@ -179,9 +173,7 @@ def test_hash():
 
 
 def test_forward():
-
     class A(DummyMetric):
-
         def update(self, x):
             self.x += x
 
@@ -218,7 +210,7 @@ def test_pickle(tmpdir):
 
 
 def test_state_dict(tmpdir):
-    """ test that metric states can be removed and added to state dict """
+    """test that metric states can be removed and added to state dict"""
     metric = DummyMetric()
     assert metric.state_dict() == OrderedDict()
     metric.persistent(True)
@@ -228,7 +220,7 @@ def test_state_dict(tmpdir):
 
 
 def test_load_state_dict(tmpdir):
-    """ test that metric states can be loaded with state dict """
+    """test that metric states can be loaded with state dict"""
     metric = DummyMetricSum()
     metric.persistent(True)
     metric.update(5)
@@ -238,22 +230,21 @@ def test_load_state_dict(tmpdir):
 
 
 def test_child_metric_state_dict():
-    """ test that child metric states will be added to parent state dict """
+    """test that child metric states will be added to parent state dict"""
 
     class TestModule(nn.Module):
-
         def __init__(self):
             super().__init__()
             self.metric = DummyMetric()
-            self.metric.add_state('a', tensor(0), persistent=True)
-            self.metric.add_state('b', [], persistent=True)
-            self.metric.register_buffer('c', tensor(0))
+            self.metric.add_state("a", tensor(0), persistent=True)
+            self.metric.add_state("b", [], persistent=True)
+            self.metric.register_buffer("c", tensor(0))
 
     module = TestModule()
     expected_state_dict = {
-        'metric.a': tensor(0),
-        'metric.b': [],
-        'metric.c': tensor(0),
+        "metric.a": tensor(0),
+        "metric.b": [],
+        "metric.c": tensor(0),
     }
     assert module.state_dict() == expected_state_dict
 
@@ -264,7 +255,7 @@ def test_device_and_dtype_transfer(tmpdir):
     assert metric.x.is_cuda is False
     assert metric.x.dtype == torch.float32
 
-    metric = metric.to(device='cuda')
+    metric = metric.to(device="cuda")
     assert metric.x.is_cuda
 
     metric = metric.double()
@@ -288,7 +279,7 @@ def test_warning_on_compute_before_update():
 
     metric.reset()
 
-    with pytest.warns(UserWarning, match=r'The ``compute`` method of metric .*'):
+    with pytest.warns(UserWarning, match=r"The ``compute`` method of metric .*"):
         val = metric.compute()
     assert val == 0.0
 

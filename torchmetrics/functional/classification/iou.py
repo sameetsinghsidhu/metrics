@@ -26,7 +26,7 @@ def _iou_from_confmat(
     num_classes: int,
     ignore_index: Optional[int] = None,
     absent_score: float = 0.0,
-    reduction: str = 'elementwise_mean',
+    reduction: str = "elementwise_mean",
 ) -> Tensor:
     intersection = torch.diag(confmat)
     union = confmat.sum(0) + confmat.sum(1) - intersection
@@ -37,10 +37,12 @@ def _iou_from_confmat(
 
     # Remove the ignored class index from the scores.
     if ignore_index is not None and 0 <= ignore_index < num_classes:
-        scores = torch.cat([
-            scores[:ignore_index],
-            scores[ignore_index + 1:],
-        ])
+        scores = torch.cat(
+            [
+                scores[:ignore_index],
+                scores[ignore_index + 1 :],
+            ]
+        )
     return reduce(scores, reduction=reduction)
 
 
@@ -51,7 +53,7 @@ def iou(
     absent_score: float = 0.0,
     threshold: float = 0.5,
     num_classes: Optional[int] = None,
-    reduction: str = 'elementwise_mean',
+    reduction: str = "elementwise_mean",
 ) -> Tensor:
     r"""
     Computes `Intersection over union, or Jaccard index calculation <https://en.wikipedia.org/wiki/Jaccard_index>`_:

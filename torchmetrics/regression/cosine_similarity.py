@@ -65,7 +65,7 @@ class CosineSimilarity(Metric):
 
     def __init__(
         self,
-        reduction: str = 'sum',
+        reduction: str = "sum",
         compute_on_step: bool = True,
         dist_sync_on_step: bool = False,
         process_group: Optional[Any] = None,
@@ -75,7 +75,7 @@ class CosineSimilarity(Metric):
             compute_on_step=compute_on_step,
             dist_sync_on_step=dist_sync_on_step,
             process_group=process_group,
-            dist_sync_fn=dist_sync_fn
+            dist_sync_fn=dist_sync_fn,
         )
 
         self.add_state("preds", [], dist_reduce_fx="cat")

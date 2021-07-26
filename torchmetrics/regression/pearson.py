@@ -72,8 +72,8 @@ class PearsonCorrcoef(Metric):
         )
 
         rank_zero_warn(
-            'Metric `PearsonCorrcoef` will save all targets and predictions in buffer.'
-            ' For large datasets this may lead to large memory footprint.'
+            "Metric `PearsonCorrcoef` will save all targets and predictions in buffer."
+            " For large datasets this may lead to large memory footprint."
         )
 
         self.add_state("preds", default=[], dist_reduce_fx="cat")

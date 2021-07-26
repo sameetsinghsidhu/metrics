@@ -24,11 +24,11 @@ def _r2_score_update(preds: Tensor, target: Tensor) -> Tuple[Tensor, Tensor, Ten
     _check_same_shape(preds, target)
     if preds.ndim > 2:
         raise ValueError(
-            'Expected both prediction and target to be 1D or 2D tensors,'
-            f' but received tensors with dimension {preds.shape}'
+            "Expected both prediction and target to be 1D or 2D tensors,"
+            f" but received tensors with dimension {preds.shape}"
         )
     if len(preds) < 2:
-        raise ValueError('Needs at least two samples to calculate r2 score.')
+        raise ValueError("Needs at least two samples to calculate r2 score.")
 
     sum_error = torch.sum(target, dim=0)
     sum_squared_error = torch.sum(target * target, dim=0)
@@ -60,18 +60,19 @@ def _r2_score_compute(
         r2 = torch.sum(diff / diff_sum * raw_scores)
     else:
         raise ValueError(
-            'Argument `multioutput` must be either `raw_values`,'
-            f' `uniform_average` or `variance_weighted`. Received {multioutput}.'
+            "Argument `multioutput` must be either `raw_values`,"
+            f" `uniform_average` or `variance_weighted`. Received {multioutput}."
         )
 
     if adjusted < 0 or not isinstance(adjusted, int):
-        raise ValueError('`adjusted` parameter should be an integer larger or' ' equal to 0.')
+        raise ValueError("`adjusted` parameter should be an integer larger or" " equal to 0.")
 
     if adjusted != 0:
         if adjusted > total - 1:
             rank_zero_warn(
                 "More independent regressions than data points in"
-                " adjusted r2 score. Falls back to standard r2 score.", UserWarning
+                " adjusted r2 score. Falls back to standard r2 score.",
+                UserWarning,
             )
         elif adjusted == total - 1:
             rank_zero_warn("Division by zero in adjusted r2 score. Falls back to" " standard r2 score.", UserWarning)

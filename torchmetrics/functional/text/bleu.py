@@ -39,7 +39,7 @@ def _count_ngram(ngram_input_list: Sequence[str], n_gram: int) -> Counter:
 
     for i in range(1, n_gram + 1):
         for j in range(len(ngram_input_list) - i + 1):
-            ngram_key = tuple(ngram_input_list[j:(i + j)])
+            ngram_key = tuple(ngram_input_list[j : (i + j)])
             ngram_counter[ngram_key] += 1
 
     return ngram_counter
@@ -52,7 +52,7 @@ def _bleu_score_update(
     denominator: Tensor,
     trans_len: Tensor,
     ref_len: Tensor,
-    n_gram: int = 4
+    n_gram: int = 4,
 ) -> Tuple[Tensor, Tensor]:
     for (translation, references) in zip(translate_corpus, reference_corpus):
         trans_len += len(translation)
@@ -77,12 +77,7 @@ def _bleu_score_update(
 
 
 def _bleu_score_compute(
-    trans_len: Tensor,
-    ref_len: Tensor,
-    numerator: Tensor,
-    denominator: Tensor,
-    n_gram: int = 4,
-    smooth: bool = False
+    trans_len: Tensor, ref_len: Tensor, numerator: Tensor, denominator: Tensor, n_gram: int = 4, smooth: bool = False
 ) -> Tensor:
     if min(numerator) == 0.0:
         return tensor(0.0)
@@ -105,7 +100,7 @@ def bleu_score(
     reference_corpus: Sequence[Sequence[Sequence[str]]],
     translate_corpus: Sequence[Sequence[str]],
     n_gram: int = 4,
-    smooth: bool = False
+    smooth: bool = False,
 ) -> Tensor:
     """
     Calculate `BLEU score <https://en.wikipedia.org/wiki/BLEU>`_ of machine translated text with one or more references

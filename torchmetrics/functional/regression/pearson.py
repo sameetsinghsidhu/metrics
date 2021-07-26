@@ -23,19 +23,19 @@ def _pearson_corrcoef_update(
     preds: Tensor,
     target: Tensor,
 ) -> Tuple[Tensor, Tensor]:
-    """ updates current estimates of the mean, cov and n_obs with new data for calculating pearsons correlation """
+    """updates current estimates of the mean, cov and n_obs with new data for calculating pearsons correlation"""
     # Data checking
     _check_same_shape(preds, target)
     preds = preds.squeeze()
     target = target.squeeze()
     if preds.ndim > 1 or target.ndim > 1:
-        raise ValueError('Expected both predictions and target to be 1 dimensional tensors.')
+        raise ValueError("Expected both predictions and target to be 1 dimensional tensors.")
 
     return preds, target
 
 
 def _pearson_corrcoef_compute(preds: Tensor, target: Tensor, eps: float = 1e-6) -> Tensor:
-    """ computes the final pearson correlation based on covariance matrix and number of observatiosn """
+    """computes the final pearson correlation based on covariance matrix and number of observatiosn"""
     preds_diff = preds - preds.mean()
     target_diff = target - target.mean()
 
