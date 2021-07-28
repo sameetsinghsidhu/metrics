@@ -27,6 +27,26 @@ def _recall_at_precision(
     thresholds: Tensor,
     min_precision: float,
 ) -> Tuple[Tensor, Tensor]:
+
+    """
+    Returns the maximum recall and best threshold from tensors of these metrics
+
+    Args:
+        precision: Tensor
+        recall: Tensor
+        thresholds: Tensor
+        min_precision: float
+
+    Given three Tensors, one with the thresholds, and another two consisting of
+    the recall and precision scores when using each threshold. This function
+    will find the maximum recall and the (best) threshold which achieved this
+    recall. A recall and threshold pair are ignored if the precision is below
+    the specified min_precision value.
+
+    If a valid recall value could not be found in the Tensors then a recall of
+    0 is returned and a best threshold of 1e6.
+    """
+
     try:
         max_recall, _, best_threshold = \
             max((r, p, t) for p, r, t in zip(precision, recall, thresholds) if p >= min_precision)
